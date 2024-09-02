@@ -25,6 +25,7 @@ connectToDB();
 // Connection To MongoDB End
 
 const allowedOrigins = process.env.ALLOWED_URLS.split(",");
+console.log(allowedOrigins);
 
 app.use(
   cors({
