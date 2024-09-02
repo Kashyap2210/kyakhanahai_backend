@@ -24,10 +24,7 @@ async function connectToDB() {
 connectToDB();
 // Connection To MongoDB End
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "kyakhanahaideploy-cjsnma293-kashyaps-projects-970e92fa.vercel.app",
-];
+const allowedOrigins = process.env.ALLOWED_URLS.split(",");
 
 app.use(
   cors({
