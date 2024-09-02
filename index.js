@@ -27,6 +27,8 @@ connectToDB();
 const allowedOrigins = process.env.ALLOWED_URLS
   ? process.env.ALLOWED_URLS.split(",")
   : [process.env.FALLBACK_URL];
+
+console.log(process.env.FALLBACK_URL, "FALLBACK");
 console.log(allowedOrigins);
 
 app.use(
