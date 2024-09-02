@@ -74,7 +74,7 @@ const sessionOptions = {
     expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
     maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true, // To Prevent Cross_Scripting Attacks
-    secure: process.env.NODE_ENV === "production", // Use true if in production
+    secure: process.env.NODE_ENV === "production",
     sameSite: "strict", // Helps prevent CSRF attacks
   },
 };
@@ -83,7 +83,7 @@ app.use(session(sessionOptions));
 
 // Routing Middlewares Start
 app.use("/api/authenticate", authenticationRoutes);
-app.use("/api/dish", dishRoutes); // Uncomment when ready
+app.use("/api/dish", dishRoutes);
 // Routing Middlewares End
 
 console.log(
