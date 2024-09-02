@@ -24,7 +24,9 @@ async function connectToDB() {
 connectToDB();
 // Connection To MongoDB End
 
-const allowedOrigins = process.env.ALLOWED_URLS.split(",");
+const allowedOrigins = process.env.ALLOWED_URLS
+  ? process.env.ALLOWED_URLS.split(",")
+  : [process.env.FALLBACK_URL];
 console.log(allowedOrigins);
 
 app.use(
