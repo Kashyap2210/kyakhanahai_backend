@@ -76,17 +76,10 @@ const sessionOptions = {
 
 app.use(session(sessionOptions));
 
-// Serve static files from the React app
-app.use(express.static(path.join(__dirname, "../Frontend/dist")));
-
 // Routing Middlewares Start
 app.use("/api/authenticate", authenticationRoutes);
 app.use("/api/dish", dishRoutes); // Uncomment when ready
 // Routing Middlewares End
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../Frontend/dist/index.html"));
-});
 
 console.log(
   "Serving static files from:",
