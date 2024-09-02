@@ -12,6 +12,7 @@ module.exports.addDish = async (req, res) => {
   console.log("Request received for addDish");
   // const userId = req.user._id; // Get userId from authenticated user
   const { name, category, type, userId } = req.body;
+  console.log(userId);
 
   // Basic validation
   if (!name || !category || !type || !userId) {
