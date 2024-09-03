@@ -5,10 +5,9 @@ const GEMINI_KEY = process.env.GOOGLE_GEMINI_API;
 const apiKey = process.env.GOOGLE_API_KEY;
 
 const addDishForUser = async (userId, dishData) => {
-  //userId will come from the JWT Token
   try {
-    const { name, category, type } = dishData;
-
+    const { userDishName, dbDishName, category, type } = dishData;
+    console.dir(dbDishName);
     // Find the last dish for this user and generate a new ID
     const lastDish = await Dish.findOne({ userId }).sort({ _id: -1 });
     let newId = lastDish ? lastDish.id + 1 : 1;
@@ -16,10 +15,11 @@ const addDishForUser = async (userId, dishData) => {
     // Create a new dish instance
     const dish = new Dish({
       id: newId,
-      name,
-      category,
-      type,
-      userId,
+      userDishName: userDishName,
+      dbDishName: dbDishName,
+      category: category,
+      type: type,
+      userId: userId,
     });
 
     // Save the dish to the database

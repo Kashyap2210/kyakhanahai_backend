@@ -1,27 +1,26 @@
 require("dotenv").config(); //Use it to deal with Enviorment Variables
 const express = require("express");
 
-//Used for Authentication
-const { storage } = require("../cloudConfig");
-const Dish = require("../Models/dish.js");
-const apiKey = process.env.GOOGLE_API_KEY;
-
 const dishServices = require("../Services/dishServices.js");
 
 module.exports.addDish = async (req, res) => {
   console.log("Request received for addDish");
   // const userId = req.user._id; // Get userId from authenticated user
-  const { name, category, type, userId } = req.body;
+  const { userDishName, dbDishName, category, type, userId } = req.body;
   console.log(userId);
+  console.log(dbDishName);
+
+  // const dbDishName = userDishName.toLowerCase();
 
   // Basic validation
-  if (!name || !category || !type || !userId) {
+  if (!userDishName || !category || !type || !userId || !dbDishName) {
     return res.status(401).send({ message: "Improper Data" });
   }
 
   try {
     const response = await dishServices.addDishForUser(userId, {
-      name,
+      userDishName,
+      dbDishName,
       category,
       type,
     });
