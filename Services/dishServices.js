@@ -7,26 +7,26 @@ const apiKey = process.env.GOOGLE_API_KEY;
 const addDishForUser = async (userId, dishData) => {
   try {
     const { userDishName, dbDishName, category, type } = dishData;
-    console.dir(dbDishName);
-    // Find the last dish for this user and generate a new ID
-    const lastDish = await Dish.findOne({ userId }).sort({ _id: -1 });
-    let newId = lastDish ? lastDish.id + 1 : 1;
 
-    // Create a new dish instance
-    const dish = new Dish({
-      id: newId,
-      userDishName: userDishName,
-      dbDishName: dbDishName,
-      category: category,
-      type: type,
-      userId: userId,
-    });
+    const existingDish = await Dish.findOne({ dbDishName });
 
+    if (existingDish) {
+      return { message: "Dish Already Exists", existingDish };
+    } else {
+      // Create a new dish instance
+      const newDish = new Dish({
+        userDishName,
+        dbDishName, // Include dbDishName here
+        category,
+        type,
+        userId,
+      });
+      await newDish.save();
+      return { message: "Dish Added To DB" };
+    }
     // Save the dish to the database
-    await dish.save();
-    return { message: "Dish Added To DB" };
   } catch (error) {
-    console.error("Error adding dish:", error);
+    console.log("Error adding dish:", error);
     throw new Error("Unable to add dish");
   }
 };

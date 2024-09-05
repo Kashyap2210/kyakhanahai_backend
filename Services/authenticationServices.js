@@ -3,7 +3,7 @@ const path = require("path");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../Models/user");
-const Dish = require("../Models/dish");
+const Dish = require("../Models/dish.js");
 
 module.exports.temporaryProfilePicUploadService = async (file) => {
   if (!file) {
@@ -82,6 +82,6 @@ module.exports.deleteAccountService = async (userId) => {
     throw new Error("User not found");
   }
   await User.findByIdAndDelete(userId);
-  await Dish.deleteMany({ userId: userId });
+  await UpdatedDish.deleteMany({ userId: userId });
   return { message: "User Deleted" };
 };

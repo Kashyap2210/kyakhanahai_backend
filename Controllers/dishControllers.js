@@ -1,20 +1,12 @@
-require("dotenv").config(); //Use it to deal with Enviorment Variables
-const express = require("express");
-
 const dishServices = require("../Services/dishServices.js");
 
 module.exports.addDish = async (req, res) => {
-  console.log("Request received for addDish");
-  // const userId = req.user._id; // Get userId from authenticated user
   const { userDishName, dbDishName, category, type, userId } = req.body;
   console.log(userId);
-  console.log(dbDishName);
-
-  // const dbDishName = userDishName.toLowerCase();
 
   // Basic validation
-  if (!userDishName || !category || !type || !userId || !dbDishName) {
-    return res.status(401).send({ message: "Improper Data" });
+  if (!userDishName || !dbDishName || !category || !type || !userId) {
+    return res.status(400).send({ message: "Improper Data" });
   }
 
   try {
@@ -24,8 +16,11 @@ module.exports.addDish = async (req, res) => {
       category,
       type,
     });
-    console.log("New dish added with ID:", response.newId);
-    res.status(200).send(response);
+    console.log("New dish added!", response);
+    if (response.existingDish) {
+      res.status(409).json({ message: response.message });
+    }
+    return res.status(201).json({ message: "Dish Added To DB" });
   } catch (error) {
     console.error("Error in addDish controller:", error);
     res.status(500).send({ message: "Unable to add dish" });

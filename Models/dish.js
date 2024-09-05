@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 
-/* MODEL FOR THE DISH START */
-const userFoodSchema = new mongoose.Schema({
-  name: {
+/* MODEL FOR THE USER STARTS*/
+const DishSchema = new mongoose.Schema({
+  userDishName: {
     type: String,
     required: true,
   },
-  category: {
+  dbDishName: {
     type: String,
     required: true,
   },
@@ -14,8 +14,10 @@ const userFoodSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-
-  //It stores users data so that each dish can be associated to a user
+  category: {
+    type: String,
+    required: true,
+  },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -23,6 +25,6 @@ const userFoodSchema = new mongoose.Schema({
   },
 });
 
-const Dish = mongoose.model("Dish", userFoodSchema);
+const Dish = mongoose.model("Dish", DishSchema);
 
 module.exports = Dish;
