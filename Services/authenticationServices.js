@@ -43,14 +43,19 @@ module.exports.logInService = async (userData) => {
   try {
     const { username, password } = userData;
     console.log(username);
+
     const logInUser = await User.findOne({ email: username });
-    console.log(logInUser, "LogInUser Service");
-    if (logInUser) {
-      const isCurrentUser = await bcrypt.compare(password, logInUser.password);
-      if (!isCurrentUser) {
-        throw new Error("Invalid credentials");
-      }
+    if (!logInUser) {
+      return { success: false, message: "No User Found" };
     }
+    const isPasswordCorrect = await bcrypt.compare(
+      password,
+      logInUser.password
+    ); // Compare password
+    if (!isPasswordCorrect) {
+      return { success: false, message: "Invalid Password" }; // Handle invalid password
+    }
+
     const payload = {
       userId: logInUser._id, // Correctly accessing userId from logInUser
       email: logInUser.email, // Correctly accessing email from logInUser
@@ -63,7 +68,7 @@ module.exports.logInService = async (userData) => {
       expiresIn: "1h", // Token expiration time
     });
 
-    return { token, logInUser };
+    return { success: true, token, logInUser };
   } catch (error) {
     console.log(error);
     throw error;

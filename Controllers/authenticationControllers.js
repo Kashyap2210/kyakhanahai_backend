@@ -28,15 +28,25 @@ module.exports.signUp = async (req, res) => {
 };
 
 module.exports.logIn = async (req, res) => {
-  console.log("Login Request Recieved In Backend");
-  console.log(req.body, "controller");
+  console.log("Login Request Received In Backend");
   try {
     const userData = await authenticationServices.logInService(req.body);
     console.log(userData, "Controller");
-    res.status(200).json({ message: "User LoggeIn successfully", userData });
+
+    if (!userData.success) {
+      if (userData.message === "No User Found") {
+        return res.status(400).json({ message: "No User Found" });
+      } else if (userData.message === "Invalid Password") {
+        return res.status(401).json({ message: "Invalid Password" });
+      }
+    }
+
+    return res.status(200).json({
+      message: "User Logged In successfully",
+      userData: { token: userData.token, logInUser: userData.logInUser },
+    });
   } catch (error) {
-    // <-- Proper catch block
-    console.log(error);
+    console.error("Error in logIn controller:", error);
     res.status(500).json({ message: "Login failed", error });
   }
 };
