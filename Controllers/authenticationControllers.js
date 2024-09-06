@@ -15,15 +15,22 @@ module.exports.temporaryProfilePicUpload = async (req, res) => {
 module.exports.signUp = async (req, res) => {
   try {
     console.log("SignUp Request Recieved In Backend");
-    const newUser = await authenticationServices.signUpService(
+    const userData = await authenticationServices.signUpService(
       req.body,
       req.file
     );
-    res.status(200).json({ message: "User created successfully", newUser });
-  } catch {
-    (error) => {
-      console.log(error);
-    };
+    if (!userData.success) {
+      return res.status(400).json({ message: userData.message });
+    }
+    return res.status(200).json({
+      message: "User created successfully",
+      newUser: userData.newUser,
+    });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ message: "Internal Server Error, Please Try Again" });
   }
 };
 

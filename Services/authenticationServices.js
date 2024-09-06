@@ -17,9 +17,17 @@ module.exports.signUpService = async (userData, file) => {
     const { email, password, name, address, phone, locality } = userData;
     const profilePic = file ? file.path : null;
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      throw new Error("User already registered");
+    const existingUserInstance1 = await User.findOne({ email });
+    if (existingUserInstance1) {
+      return { success: false, message: "User already registered" };
+    }
+
+    const userWithSamePhone = await User.find({ phone });
+    if (userWithSamePhone.length >= 3) {
+      return {
+        success: false,
+        message: "Only 3 Accounts Can Be Registered Per Phone Number",
+      };
     }
 
     const newUser = new User({
@@ -33,8 +41,10 @@ module.exports.signUpService = async (userData, file) => {
     });
 
     await newUser.save();
+    return { success: true, message: "User Created Successfully", newUser };
   } catch (error) {
     console.error("Error creating user:", error);
+    throw error;
   }
 };
 
