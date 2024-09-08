@@ -36,6 +36,7 @@ module.exports.showDish = async (req, res) => {
   console.log(dbUserId);
   try {
     const dishes = await dishServices.getDishesByUserId(dbUserId);
+    console.log(dishes);
     if (!res.headersSent) {
       res.status(200).json(dishes);
     }

@@ -16,7 +16,7 @@ const addDishForUser = async (userId, dishData) => {
       // Create a new dish instance
       const newDish = new Dish({
         userDishName,
-        dbDishName, // Include dbDishName here
+        dbDishName,
         category,
         type,
         userId,
