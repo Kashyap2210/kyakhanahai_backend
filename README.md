@@ -1,6 +1,6 @@
 ### Backend of Kyakhanahai.com
 
-This repository contains the backend for Kyakhanahai.com, a MERN stack project that helps users generate random meals from a list of saved dishes. The backend is built using Node.js and Express, and follows the MVCS (Model-View-Controller-Service) architecture.
+This repository contains the backend for kyakhanahai, a MERN stack project that helps users generate random meals from a list of saved dishes. The backend is built using Node.js and Express, and follows the MVCS (Model-View-Controller-Service) architecture.
 
 ### Table of Contents
 
