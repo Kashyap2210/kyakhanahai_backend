@@ -84,24 +84,22 @@ const deleteDishForUser = async (userId, dishId) => {
 };
 
 const generateDishForUser = async (prompt) => {
-  // console.log(question, "Service");
-  console.log(
-    "Request recieved for generating random dish from the user.",
-    "Inside Service"
-  );
-  const sendReqToGemini = await axios({
-    url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_KEY}`,
-    method: "post",
-    data: {
-      contents: [{ parts: [{ text: prompt }] }],
+  // console.log("lorem", process.env.GOOGLE_GEMINI_API);
+  const response = await axios.post(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GOOGLE_GEMINI_API}`,
+    {
+      contents: [
+        {
+          parts: [{ text: prompt }],
+        },
+      ],
     },
-  });
-  const generatedDishTextFromGemini =
-    sendReqToGemini.data.candidates[0].content;
+  );
 
-  console.log(generatedDishTextFromGemini);
+  const text = response.data.candidates[0].content.parts[0].text;
+  // console.log("text", text);
 
-  return generatedDishTextFromGemini;
+  return text;
 };
 
 const searchNearbyRestaurantsService = async (lat, lng, radius) => {
@@ -116,7 +114,7 @@ const searchNearbyRestaurantsService = async (lat, lng, radius) => {
           key: apiKey,
         },
         withCredentials: true,
-      }
+      },
     );
     console.log("API Response:", response.data);
     return response.data.results;
